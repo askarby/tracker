@@ -16,6 +16,7 @@ import io.micronaut.security.authentication.UserDetails;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.token.generator.RefreshTokenGenerator;
 import io.micronaut.security.token.jwt.endpoints.TokenRefreshRequest;
+import io.micronaut.security.token.jwt.render.AccessRefreshToken;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.*;
@@ -36,6 +37,14 @@ public class RefreshTokenIntegrationTest {
     @Client("/")
     RxHttpClient client;
 
+    @Inject
+    RefreshTokenRepository refreshTokenRepository;
+
+    @AfterEach
+    public void cleanUp() {
+        refreshTokenRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("Refresh token is present on auth response")
     public void hasRefreshToken() throws ParseException {
@@ -52,6 +61,33 @@ public class RefreshTokenIntegrationTest {
 
         var refreshToken = token.getRefreshToken();
         assertThat(refreshToken).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Refresh token gets successfully renewed")
+    public void successfulRenew() throws InterruptedException {
+        var previousTokenCount = refreshTokenRepository.count();
+
+        var credentials = new UsernamePasswordCredentials("sherlock", "password");
+        var request = HttpRequest.POST("/login", credentials);
+        var response = client.toBlocking().retrieve(request, BearerAccessRefreshToken.class);
+
+        // Wait for database to have persisted new refresh token
+        while (previousTokenCount + 1 != refreshTokenRepository.count()) {
+            Thread.sleep(50);
+        }
+
+        assertThat(response).hasFieldOrProperty("accessToken");
+        assertThat(response).hasFieldOrProperty("refreshToken");
+
+        // Wait for iat to change
+        Thread.sleep(1_000);
+
+        var refreshResponse = client.toBlocking().retrieve(HttpRequest.POST("/oauth/access_token",
+                new TokenRefreshRequest(response.getRefreshToken())), AccessRefreshToken.class);
+
+        assertThat(refreshResponse).hasFieldOrProperty("accessToken");
+        assertThat(refreshResponse.getAccessToken()).isNotEqualTo(response.getAccessToken());
     }
 
     @Test
