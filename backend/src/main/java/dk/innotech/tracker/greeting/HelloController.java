@@ -1,8 +1,10 @@
-package dk.innotech.tracker.hello;
+package dk.innotech.tracker.greeting;
 
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 import io.reactivex.Single;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 
 @Controller("/greetings")
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class HelloController {
     private List<String> names;
 
