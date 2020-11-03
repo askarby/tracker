@@ -1,8 +1,8 @@
-name: learn-github-actions
+name: backend
 on: 
   push:
     paths:
-    - 'brackend/**'
+    - 'backend/**'
 jobs:
   run-tests:
     runs-on: ubuntu-latest
