@@ -1,5 +1,5 @@
 {
-  "npmScope": "frontend",
+  "npmScope": "tracker",
   "affected": {
     "defaultBase": "master"
   },
@@ -32,13 +32,19 @@
   },
   "projects": {
     "tracker": {
-      "tags": []
+      "tags": ["scope:app"]
     },
     "tracker-e2e": {
       "tags": [],
       "implicitDependencies": [
         "tracker"
       ]
+    },
+    "auth": {
+      "tags": ["scope:auth"]
+    },
+    "shared-utils": {
+      "tags": ["scope:shared"]
     }
   }
 }

@@ -15,7 +15,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "strict": true,
+    "paths": {
+      "@environment": ["apps/tracker/src/environments/environment.ts"],
+      "@tracker/auth": ["libs/auth/src/index.ts"],
+      "@tracker/shared-utils": ["libs/shared-utils/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

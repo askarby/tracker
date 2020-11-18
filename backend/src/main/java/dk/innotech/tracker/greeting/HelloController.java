@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
-@Controller("/greetings")
+@Controller("/greeting")
 @Secured(SecurityRule.IS_ANONYMOUS)
 public class HelloController {
     private List<String> names;
@@ -23,7 +23,7 @@ public class HelloController {
         names = List.of("Anders", "Benny", "bob");
     }
 
-    @Get(uri = "/hello/{name}", produces = MediaType.TEXT_PLAIN)
+    @Get(uri = "/hello/{name}")
     @Operation(summary = "Greets a person",
             description = "A friendly greeting is returned"
     )
@@ -34,7 +34,8 @@ public class HelloController {
     @ApiResponse(responseCode = "400", description = "Invalid Name Supplied")
     @ApiResponse(responseCode = "404", description = "Person not found")
     @Tag(name = "greeting")
-    public Single<String> index(String name) {
-        return Single.just("Hello " + name + "!");
+    public Single<GreetingResponse> index(String name) {
+        return Single.just(new GreetingResponse("hello", name));
     }
 }
+

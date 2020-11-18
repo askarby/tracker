@@ -1,10 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AuthActions } from '@tracker/auth';
 
 @Component({
-  selector: 'frontend-root',
+  selector: 'tracker-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'tracker';
+export class AppComponent implements OnInit {
+
+  constructor(private store: Store<any>) {
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch(AuthActions.initialize());
+
+  }
 }
