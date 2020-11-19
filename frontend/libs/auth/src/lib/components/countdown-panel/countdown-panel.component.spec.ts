@@ -1,8 +1,8 @@
-import { Spectator, createComponentFactory } from '@ngneat/spectator';
+import { Spectator, createComponentFactory } from '@ngneat/spectator/jest';
 
 import { CountdownPanelComponent } from './countdown-panel.component';
 import { MockPipe } from 'ng-mocks';
-import { ReadableTimePipe } from '../../../../../shared-utils/src/lib/pipes/readable-time.pipe';
+import { ReadableTimePipe } from '@tracker/shared-utils';
 
 describe('CountdownPanelComponent', () => {
   const createComponent = createComponentFactory({

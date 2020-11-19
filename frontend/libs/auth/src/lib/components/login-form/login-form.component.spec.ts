@@ -1,4 +1,4 @@
-import { Spectator, createComponentFactory } from '@ngneat/spectator';
+import { Spectator, createComponentFactory } from '@ngneat/spectator/jest';
 
 import { LoginFormComponent } from './login-form.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';

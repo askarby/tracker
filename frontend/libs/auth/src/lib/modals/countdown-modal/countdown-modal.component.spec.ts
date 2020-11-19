@@ -1,4 +1,4 @@
-import { Spectator, createComponentFactory } from '@ngneat/spectator';
+import { Spectator, createComponentFactory } from '@ngneat/spectator/jest';
 
 import { CountdownModalComponent } from './countdown-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';

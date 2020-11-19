@@ -1,4 +1,4 @@
-import { createServiceFactory, SpectatorService } from '@ngneat/spectator';
+import { createServiceFactory, SpectatorService } from '@ngneat/spectator/jest';
 import { LocalStorageService } from './local-storage.service';
 import { WINDOW_TOKEN } from '../tokens/window.token';
 
