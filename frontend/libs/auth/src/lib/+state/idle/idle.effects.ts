@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { exhaustMap, filter, first, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
-import { fromEvent, interval, merge, Observable, of, timer } from 'rxjs';
+import { exhaustMap, filter, first, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { interval, merge, Observable, of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IdleSelectors } from './idle.selectors';
-import { Milliseconds, Seconds } from '@tracker/shared-utils';
+import { BrowserActivityService, Milliseconds } from '@tracker/shared-utils';
 import { TokenActions } from '../token/token.actions';
 import {
   CountdownModalComponent,
@@ -19,15 +19,16 @@ export class IdleEffects {
 
   idle$ = createEffect(() => this.actions$.pipe(
     ofType(TokenActions.loginSuccess),
-    withLatestFrom(this.store.select(IdleSelectors.selectTimeout)),
-    exhaustMap(([action, timeoutMilliseconds]) => {
+    withLatestFrom(this.store.select(IdleSelectors.selectCustomTimeoutMilliseconds)),
+    exhaustMap(([action, customTimeoutMilliseconds]) => {
       return interval(Milliseconds.fromSeconds(1)).pipe(
-        withLatestFrom(this.browserActivityTimestamp()),
+        withLatestFrom(this.activityService.anyActivityTimestamp$()),
         map(([_, lastEvent]) => Date.now() - lastEvent),
         filter((elapsed) => {
           // We'll round this, since timeout lacks a bit of precision,
           // a timeout of 1000ms may take 1002ms or more.
           const elapsedSeconds = Math.round(elapsed / 1000);
+          const timeoutMilliseconds = customTimeoutMilliseconds || this.config.idleTimeoutMilliseconds;
           const timeoutSeconds = Math.round((timeoutMilliseconds - this.config.idleCountdownMilliseconds) / 1000);
           return elapsedSeconds > 0 && elapsedSeconds % timeoutSeconds === 0;
         }),
@@ -41,23 +42,8 @@ export class IdleEffects {
   constructor(private actions$: Actions,
               private store: Store<any>,
               private modalService: NgbModal,
+              private activityService: BrowserActivityService,
               @Inject(AUTH_CONFIG_TOKEN) private config: AuthModuleConfig) {
-  }
-
-  private browserActivityTimestamp(): Observable<number> {
-    return merge(
-      fromEvent(document, 'click'),
-      fromEvent(document, 'wheel'),
-      fromEvent(document, 'scroll'),
-      fromEvent(document, 'mousemove'),
-      fromEvent(document, 'keyup'),
-      fromEvent(window, 'resize'),
-      fromEvent(window, 'scroll'),
-      fromEvent(window, 'mousemove')
-    ).pipe(
-      startWith(undefined),
-      map(() => Date.now())
-    );
   }
 
   private isLoggedOut() {

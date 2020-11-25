@@ -14,6 +14,7 @@ import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Singleton
 public class AuthenticationProviderUserPassword implements AuthenticationProvider {
@@ -23,7 +24,19 @@ public class AuthenticationProviderUserPassword implements AuthenticationProvide
         return Flowable.create(emitter -> {
             if (authenticationRequest.getIdentity().equals("sherlock") &&
                     authenticationRequest.getSecret().equals("password")) {
-                emitter.onNext(new UserDetails((String) authenticationRequest.getIdentity(), new ArrayList<>()));
+                var roles = new ArrayList<String>();
+                roles.add("ROLE_ADMIN");
+
+
+                var etc = new HashMap<String, Object>();
+                etc.put("idleTimeoutMinutes", 5);
+                etc.put("fullName", "Mr. Sherlock Holmes");
+
+                var attributes = new HashMap<String, Object>();
+                attributes.put("etc", etc);
+
+
+                emitter.onNext(new UserDetails((String) authenticationRequest.getIdentity(), roles, attributes));
                 emitter.onComplete();
             } else {
                 emitter.onError(new AuthenticationException(new AuthenticationFailed()));

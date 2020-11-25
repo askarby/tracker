@@ -6,6 +6,6 @@ import { Milliseconds } from '@tracker/shared-utils';
 export const idleReducer = createMutableReducer<IdleState>(
   createInitialIdleState(),
   mutableOn(IdleActions.setTimeout, (draft, { timeoutMinutes }) => {
-    draft.timeout = Milliseconds.fromMinutes(timeoutMinutes);
+    draft.customTimeoutMilliseconds = Milliseconds.fromMinutes(timeoutMinutes);
   }),
 );

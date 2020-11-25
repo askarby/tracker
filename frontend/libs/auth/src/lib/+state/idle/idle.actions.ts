@@ -1,8 +1,8 @@
 import { createAction, props } from '@ngrx/store';
 
-export namespace IdleActions {
-  export const setTimeout = createAction(
+export const IdleActions = {
+  setTimeout: createAction(
     '[auth/idle] Set Timeout',
     props<{ timeoutMinutes: number }>()
-  );
+  )
 }

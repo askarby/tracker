@@ -1,14 +1,14 @@
-import { Milliseconds, Seconds } from '@tracker/shared-utils';
-
 export interface IdleState {
   /**
-   * The timeout (after having idled for a period of time) in milliseconds.
+   * Number of milliseconds to idle before being logged out.
+   *
+   * Will only hold a value when user specified.
    */
-  timeout: number;
+  customTimeoutMilliseconds: number | null;
 }
 
 export function createInitialIdleState(): IdleState {
   return {
-    timeout: Milliseconds.fromMinutes(2),
+    customTimeoutMilliseconds: null,
   };
 }

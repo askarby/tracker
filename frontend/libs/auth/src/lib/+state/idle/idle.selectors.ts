@@ -1,17 +1,17 @@
 import { createSelector } from '@ngrx/store';
 import { AuthSelectors } from '../auth.selectors';
 
-export namespace IdleSelectors {
-  const selectIdleState = createSelector(
-    AuthSelectors.selectAuthState,
-    (auth) => auth.idle
-  );
+const selectIdleState = createSelector(
+  AuthSelectors.selectAuthState,
+  (auth) => auth.idle
+);
 
+export const IdleSelectors = {
   /**
-   * Retrieves the time that the must pass before having timed out (automatically logging out).
+   * Retrieves the time (custommized)  that the must pass before having timed out (automatically logging out).
    */
-  export const selectTimeout = createSelector(
+  selectCustomTimeoutMilliseconds: createSelector(
     selectIdleState,
-    (state) => state.timeout
-  );
+    (state) => state.customTimeoutMilliseconds
+  )
 }

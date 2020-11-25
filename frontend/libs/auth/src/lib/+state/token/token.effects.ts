@@ -1,12 +1,12 @@
-import { Actions, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TokenActions } from './token.actions';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { Injectable } from '@angular/core';
-import { of, throwError } from 'rxjs';
+import { EMPTY, of, throwError } from 'rxjs';
 import { LocalStorageService } from '@tracker/shared-utils';
 import { AuthSuccess } from '../../model/auth-success.model';
-import { Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { TokenSelectors } from './token.selectors';
 import { AuthActions } from '../auth.actions';
 
@@ -64,9 +64,8 @@ export class TokenEffects {
 
   saveToken$ = createEffect(() => this.actions$.pipe(
     ofType(TokenActions.loginSuccess, TokenActions.refreshSuccess),
-    switchMap((action) => {
-      return this.localStorageService.set(TokenEffects.LocaleStorageKey, action.data);
-    })
+    switchMap((action) =>
+      this.localStorageService.set(TokenEffects.LocaleStorageKey, action.data).pipe(mapTo(EMPTY)))
   ), { dispatch: false });
 
   constructor(private actions$: Actions,
@@ -76,7 +75,6 @@ export class TokenEffects {
   }
 
   private hasExpired(data: AuthSuccess) {
-    // TODO: Make sure to compensate for countdown delay (don't start of by logging in if countdown is less than 1 minute away)
     if (data && data.parsedAccessToken.exp * 1000 < Date.now()) {
       return true;
     } else {

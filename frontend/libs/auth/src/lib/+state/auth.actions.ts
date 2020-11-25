@@ -1,16 +1,16 @@
 import { createAction, props } from '@ngrx/store';
 
-export namespace AuthActions {
-  export const initialize = createAction(
+export const AuthActions = {
+  initialize: createAction(
     '[auth] Initialize',
-  );
+  ),
 
-  export const login = createAction(
+  login: createAction(
     '[auth] Login',
     props<{ username: string, password: string }>()
-  );
+  ),
 
-  export const logout = createAction(
+  logout: createAction(
     '[auth] Logout',
-  );
+  ),
 }

@@ -18,7 +18,7 @@ export const tokenReducer = createMutableReducer<TokenState>(
   mutableOn(TokenActions.refreshSuccess, (draft, { data} ) => {
     updateToken(draft, data);
   }),
-  mutableOn(TokenActions.refreshFailed, (draft, error) => {
+  mutableOn(TokenActions.refreshFailed, (draft, { error }) => {
     clearToken(draft, error);
   }),
 );
