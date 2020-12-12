@@ -19,11 +19,14 @@ jobs:
       
       - name: Install packages
         run: npm install
+        working-directory: ./frontend
       
       - name: Lint workspace and projects
         shell: bash
         run: npm run lint
+        working-directory: ./frontend
 
       - name: Run Tests
         shell: bash
         run: npm run test
+        working-directory: ./frontend
