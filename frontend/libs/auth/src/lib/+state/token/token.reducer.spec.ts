@@ -1,8 +1,8 @@
 import { TokenActions } from './token.actions';
-import { createAuthSuccess } from '../../testing/models/auth-success-model.test-data';
+import { createAuthSuccess } from '../../../testing/models/auth-success-model.test-data';
 import { tokenReducer } from './token.reducer';
 import { TokenState, TokenStatus } from './token.state';
-import { AuthSuccess } from '../../model/auth-success.model';
+import { AuthSuccess } from '../../models/auth-success.model';
 
 describe('Token Reducer', () => {
   describe(`reducing action with type "${TokenActions.loginSuccess.type}"`, () => {

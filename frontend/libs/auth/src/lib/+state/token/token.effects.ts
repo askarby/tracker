@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { Injectable } from '@angular/core';
 import { EMPTY, of, throwError } from 'rxjs';
 import { LocalStorageService } from '@tracker/shared-utils';
-import { AuthSuccess } from '../../model/auth-success.model';
+import { AuthSuccess } from '../../models/auth-success.model';
 import { Store } from '@ngrx/store';
 import { TokenSelectors } from './token.selectors';
 import { AuthActions } from '../auth.actions';

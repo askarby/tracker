@@ -1,0 +1,9 @@
+<shell-site-navbar
+  [items]="topNavigation$ | async"
+  [loginPath]="config.navigation.site.loginPath"
+  [socialMedia]="config.company.socialMedia"
+></shell-site-navbar>
+
+<router-outlet></router-outlet>
+
+<shell-footer [items]="footer$ | async" displayFor="site"></shell-footer>

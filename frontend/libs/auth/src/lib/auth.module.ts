@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule, InjectionToken } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
@@ -13,10 +13,12 @@ import { BearerTokenInterceptor } from './interceptors/bearer-token.interceptor'
 import { DeniedResponseInterceptor } from './interceptors/denied-response.interceptor';
 import { idleReducer } from './+state/idle/idle.reducer';
 import { IdleEffects } from './+state/idle/idle.effects';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { CountdownModalComponent } from './modals/countdown-modal/countdown-modal.component';
 import { CountdownPanelComponent } from './components/countdown-panel/countdown-panel.component';
 import { AUTH_CONFIG_TOKEN, AuthModuleConfig } from './auth.config';
+import { ShellModule } from '@tracker/shell';
+import { SocialLoginPanelComponent } from './components/social-login-panel/social-login-panel.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   imports: [
@@ -24,20 +26,21 @@ import { AUTH_CONFIG_TOKEN, AuthModuleConfig } from './auth.config';
     HttpClientModule,
     ReactiveFormsModule,
     SharedUtilsModule,
+    ShellModule,
     StoreModule.forFeature('auth', {
       token: tokenReducer,
-      idle: idleReducer,
+      idle: idleReducer
     }),
     EffectsModule.forFeature([
       TokenEffects,
-      IdleEffects,
+      IdleEffects
     ]),
-    NgbModalModule,
+    ModalModule.forChild(),
   ],
   exports: [
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
-  declarations: [LoginPageComponent, LoginFormComponent, CountdownModalComponent, CountdownPanelComponent]
+  declarations: [LoginPageComponent, LoginFormComponent, CountdownModalComponent, CountdownPanelComponent, SocialLoginPanelComponent]
 })
 export class AuthModule {
   static forRoot(config: AuthModuleConfig): ModuleWithProviders<AuthModule> {
@@ -46,7 +49,7 @@ export class AuthModule {
       providers: [
         { provide: HTTP_INTERCEPTORS, useClass: BearerTokenInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: DeniedResponseInterceptor, multi: true },
-        { provide: AUTH_CONFIG_TOKEN, useValue: config },
+        { provide: AUTH_CONFIG_TOKEN, useValue: config }
       ]
     };
   }

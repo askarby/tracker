@@ -1,7 +1,7 @@
 import { TokenState, TokenStatus } from './token.state';
-import { createAccessToken, createTokenState } from '../../testing/ngrx/token-state.test-data';
+import { createAccessToken, createTokenState } from '../../../testing/ngrx/token-state.test-data';
 import { TokenSelectors } from './token.selectors';
-import { enumValuesOf } from '../../testing/enum.test-utils';
+import { enumValuesOf } from '../../../testing/enum.test-utils';
 
 describe('Token Selectors', () => {
   let state: TokenState;

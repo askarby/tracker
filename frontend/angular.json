@@ -20,11 +20,13 @@
               "apps/tracker/src/favicon.ico",
               "apps/tracker/src/assets"
             ],
-            "styles": ["apps/tracker/src/styles.scss"],
+            "styles": [
+              "apps/tracker/src/styles.scss",
+              "apps/tracker/src/assets/vendor/nucleo/css/nucleo.css",
+              "apps/tracker/src/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css"
+            ],
             "scripts": [],
-            "allowedCommonJsDependencies": [
-              "ngrx-etc"
-            ]
+            "allowedCommonJsDependencies": ["ngrx-etc", "chart.js"]
           },
           "configurations": {
             "production": {
@@ -89,7 +91,8 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/tracker/jest.config.js",
-            "passWithNoTests": true
+            "passWithNoTests": true,
+            "detectOpenHandles": true
           }
         }
       }
@@ -125,7 +128,7 @@
       "projectType": "library",
       "root": "libs/auth",
       "sourceRoot": "libs/auth/src",
-      "prefix": "tracker",
+      "prefix": "auth",
       "architect": {
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
@@ -141,7 +144,8 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/auth/jest.config.js",
-            "passWithNoTests": true
+            "passWithNoTests": true,
+            "detectOpenHandles": true
           }
         }
       }
@@ -150,7 +154,7 @@
       "projectType": "library",
       "root": "libs/shared-utils",
       "sourceRoot": "libs/shared-utils/src",
-      "prefix": "tracker",
+      "prefix": "utils",
       "architect": {
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
@@ -166,7 +170,132 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/shared-utils/jest.config.js",
-            "passWithNoTests": true
+            "passWithNoTests": true,
+            "detectOpenHandles": true
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "shell": {
+      "root": "libs/shell",
+      "sourceRoot": "libs/shell/src",
+      "projectType": "library",
+      "prefix": "shell",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/shell/tsconfig.lib.json",
+              "libs/shell/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/shell/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/shell/jest.config.js",
+            "passWithNoTests": true,
+            "detectOpenHandles": true
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "time": {
+      "projectType": "library",
+      "root": "libs/time",
+      "sourceRoot": "libs/time/src",
+      "prefix": "tracker",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/time/tsconfig.lib.json",
+              "libs/time/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/time/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/time/jest.config.js",
+            "passWithNoTests": true,
+            "detectOpenHandles": true
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "transport": {
+      "projectType": "library",
+      "root": "libs/transport",
+      "sourceRoot": "libs/transport/src",
+      "prefix": "tracker",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/transport/tsconfig.lib.json",
+              "libs/transport/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/transport/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/transport/jest.config.js",
+            "passWithNoTests": true,
+            "detectOpenHandles": true
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "dashboard": {
+      "projectType": "library",
+      "root": "libs/dashboard",
+      "sourceRoot": "libs/dashboard/src",
+      "prefix": "tracker",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/dashboard/tsconfig.lib.json",
+              "libs/dashboard/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/dashboard/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/dashboard/jest.config.js",
+            "passWithNoTests": true,
+            "detectOpenHandles": true
           }
         }
       },

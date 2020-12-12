@@ -1,10 +1,10 @@
 import { Spectator, createComponentFactory } from '@ngneat/spectator/jest';
 
 import { CountdownModalComponent } from './countdown-modal.component';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponents } from 'ng-mocks';
 import { CountdownPanelComponent } from '../../components/countdown-panel/countdown-panel.component';
 import { AUTH_CONFIG_TOKEN, AuthModuleConfig } from '../../auth.config';
+import { ModalController } from '@tracker/shell';
 
 describe('CountdownModalComponent', () => {
   const createComponent = createComponentFactory({
@@ -21,7 +21,7 @@ describe('CountdownModalComponent', () => {
         }
       },
       {
-        provide: NgbActiveModal,
+        provide: ModalController,
         useValue: {
 
         }

@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { AuthSuccess } from '../../model/auth-success.model';
+import { AuthSuccess } from '../../models/auth-success.model';
 
 export const TokenActions = {
   loginSuccess: createAction(

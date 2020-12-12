@@ -1,6 +1,6 @@
 import { IdleSelectors } from './idle.selectors';
 import { IdleState } from './idle.state';
-import { createIdleState } from '../../testing/ngrx/idle-state.test-data';
+import { createIdleState } from '../../../testing/ngrx/idle-state.test-data';
 
 describe('Idle Selectors', () => {
   let state: IdleState;

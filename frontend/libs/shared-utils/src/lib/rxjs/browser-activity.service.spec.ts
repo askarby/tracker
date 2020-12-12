@@ -1,4 +1,4 @@
-import { createServiceFactory, SpectatorService } from '@ngneat/spectator';
+import { createServiceFactory, SpectatorService } from '@ngneat/spectator/jest';
 import { BrowserActivityService } from './browser-activity.service';
 
 describe('BrowserActivityService', () => {

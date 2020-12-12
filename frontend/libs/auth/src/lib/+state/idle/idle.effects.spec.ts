@@ -4,17 +4,16 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserActivityService, Milliseconds } from '@tracker/shared-utils';
 import { IdleSelectors } from './idle.selectors';
-import { CountdownModalResponse } from '../../modals/countdown-modal/countdown-modal.component';
-import { provideAuthDefaultConfig } from '../../testing/auth-config.test-data';
+import { provideAuthDefaultConfig } from '../../../testing/auth-config.test-data';
+import { ModalService } from '@tracker/shell';
 
 describe('IdleEffects', () => {
   const createEffects = createServiceFactory({
     service: IdleEffects,
     mocks: [
-      NgbModal,
+      ModalService,
       BrowserActivityService
     ],
     providers: [
@@ -35,9 +34,8 @@ describe('IdleEffects', () => {
   let effects: IdleEffects;
   let actions$: Observable<Action>;
 
-  let closed: Subject<CountdownModalResponse>;
-  let dismissed: Subject<CountdownModalResponse>;
-  let modalService: SpyObject<NgbModal>;
+  let closed: Subject<Action>;
+  let modalService: SpyObject<ModalService>;
 
   let activityService: SpyObject<BrowserActivityService>;
 
@@ -46,14 +44,10 @@ describe('IdleEffects', () => {
     effects = spectator.service;
     actions$ = EMPTY;
 
-    closed = new Subject<CountdownModalResponse>();
-    dismissed = new Subject<CountdownModalResponse>();
+    closed = new Subject<Action>();
 
-    modalService = spectator.inject(NgbModal);
-    modalService.open.andReturn({
-      closed: closed.asObservable(),
-      dismissed: dismissed.asObservable()
-    });
+    modalService = spectator.inject(ModalService);
+    modalService.displayModal.andReturn(closed.asObservable());
 
     activityService = spectator.inject(BrowserActivityService);
   });

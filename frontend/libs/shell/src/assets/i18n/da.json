@@ -1,0 +1,30 @@
+{
+  "site": {
+    "navigation": {
+      "toggle": "Skift Navigation"
+    },
+    "social": {
+      "facebook": {
+        "title": "Facebook",
+        "tooltip": "Giv os et like Facebook"
+      },
+      "instagram": {
+        "title": "Instagram",
+        "tooltip": "Følg os på Instagram"
+      },
+      "twitter": {
+        "title": "Twitter",
+        "tooltip": "Følg os på Twitter"
+      },
+      "github": {
+        "title": "Github",
+        "tooltip": "Giv os en stjerne på Github"
+      }
+    },
+    "auth": {
+      "login": {
+        "text": "Log på"
+      }
+    }
+  }
+}

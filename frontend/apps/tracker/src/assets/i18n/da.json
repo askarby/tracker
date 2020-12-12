@@ -1,0 +1,19 @@
+{
+  "app": {
+    "navigation": {
+      "admin": {
+        "dashboard": "Dashboard"
+      },
+      "site": {
+        "home": "Start",
+        "functionality": "Funktionalitet",
+        "pricing": "Priser"
+      },
+      "footer": {
+        "about-us": "Om os",
+        "terms-of-usage": "Brugsbetingelser",
+        "licensing": "Licensbetingelser"
+      }
+    }
+  }
+}

@@ -1,0 +1,143 @@
+<nav
+  id="navbar-main"
+  class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light"
+  *transloco="let t; read: 'shell.site'"
+>
+  <div class="container">
+    <a class="navbar-brand" [routerLink]="['/']">
+      <img src="assets/img/brand/white.png" />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbar-collapse"
+      aria-expanded="false"
+      [attr.aria-label]="t('navigation.toggle')"
+      (click)="isCollapsed = !isCollapsed"
+      [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="navbar-collapse navbar-custom-collapse collapse"
+      id="collapseBasic" [collapse]="isCollapsed"
+    >
+      <!-- Collapse header -->
+      <div class="navbar-collapse-header">
+        <div class="row">
+          <div class="col-6 collapse-brand">
+            <a [routerLink]="['/']">
+              <img src="assets/img/brand/blue.png" />
+            </a>
+          </div>
+          <div class="col-6 collapse-close">
+            <button
+              type="button"
+              class="navbar-toggler"
+              data-toggle="collapse"
+              data-target="#navbar-collapse"
+              aria-controls="navbar-collapse"
+              aria-expanded="false"
+              [attr.aria-label]="t('navigation.toggle')"
+              (click)="isCollapsed = !isCollapsed"
+            >
+              <span></span> <span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation items -->
+      <ng-container *ngTemplateOutlet="navigationItems"></ng-container>
+
+      <hr class="d-lg-none" />
+
+      <!-- Social media -->
+      <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+        <!-- Facebook -->
+        <li *ngIf="socialMedia.facebookHandle as handle" class="nav-item">
+          <a
+            class="nav-link nav-link-icon"
+            href="https://www.facebook.com/{{handle}}"
+            target="_blank"
+            data-toggle="tooltip"
+            [attr.data-original-title]="t('social.facebook.tooltip')"
+          >
+            <i class="fab fa-facebook-square"></i>
+            <span class="nav-link-inner--text d-lg-none">{{t('social.facebook.title')}}</span>
+          </a>
+        </li>
+
+        <!-- Instagram -->
+        <li *ngIf="socialMedia.instagramHandle as handle" class="nav-item">
+          <a
+            class="nav-link nav-link-icon"
+            href="https://www.instagram.com/{{handle}}"
+            target="_blank"
+            data-toggle="tooltip"
+            [attr.data-original-title]="t('social.instagram.tooltip')"
+          >
+            <i class="fab fa-instagram"></i>
+            <span class="nav-link-inner--text d-lg-none">{{t('social.instagram.title')}}</span>
+          </a>
+        </li>
+
+        <!-- Twitter -->
+        <li *ngIf="socialMedia.twitterHandle as handle" class="nav-item">
+          <a
+            class="nav-link nav-link-icon"
+            href="https://twitter.com/{{handle}}"
+            target="_blank"
+            data-toggle="tooltip"
+            [attr.data-original-title]="t('social.twitter.tooltip')"
+          >
+            <i class="fab fa-twitter-square"></i>
+            <span class="nav-link-inner--text d-lg-none">{{t('social.twitter.title')}}</span>
+          </a>
+        </li>
+
+        <!-- Github -->
+        <li *ngIf="socialMedia.githubHandle as handle" class="nav-item">
+          <a
+            class="nav-link nav-link-icon"
+            href="https://github.com/{{handle}}"
+            target="_blank"
+            data-toggle="tooltip"
+            [attr.data-original-title]="t('social.github.tooltip')"
+          >
+            <i class="fab fa-github"></i>
+            <span class="nav-link-inner--text d-lg-none">{{t('social.github.title')}}</span>
+          </a>
+        </li>
+
+        <!-- Login -->
+        <li class="nav-item d-none d-lg-block ml-lg-4">
+          <a
+            [routerLink]="loginPath"
+            class="btn btn-neutral btn-icon"
+          >
+            <span class="btn-inner--icon">
+              <i class="fas fa-key mr-2"></i>
+            </span>
+            <span class="nav-link-inner--text">{{ t('auth.login.text') }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<ng-template #navigationItems>
+  <ul class="navbar-nav mr-auto" *transloco="let t">
+    <li *ngFor="let item of items" class="nav-item">
+      <a
+        class="nav-link"
+        routerLinkActive="active"
+        [routerLink]="item.path"
+      >
+        <span class="nav-link-inner--text">{{t(item.i18n)}}</span>
+      </a>
+    </li>
+  </ul>
+</ng-template>

@@ -1,0 +1,45 @@
+<div class="container-fluid" *ngIf="displayFor === 'admin'; else siteFooter">
+  <footer class="footer">
+    <ng-container *ngTemplateOutlet="contents"></ng-container>
+  </footer>
+</div>
+
+<ng-template #siteFooter>
+  <footer class="py-5">
+    <div class="container">
+      <ng-container *ngTemplateOutlet="contents"></ng-container>
+    </div>
+  </footer>
+</ng-template>
+
+<ng-template #contents>
+  <div class="row align-items-center justify-content-xl-between" *transloco="let t">
+    <!-- Copyright disclaimer (left side) -->
+    <div class="col-xl-6">
+      <div class="copyright text-center text-xl-left text-muted">
+        &copy; {{ now | date: "yyyy" }}
+        <a
+          [href]="config.company.website"
+          class="font-weight-bold ml-1"
+          target="_blank"
+        >{{config.company.name}}</a
+        >
+      </div>
+    </div>
+
+    <!-- Footer links (right side) -->
+    <div class="col-xl-6">
+      <ul
+        class="nav nav-footer justify-content-center justify-content-xl-end"
+      >
+        <li *ngFor="let item of items" class="nav-item">
+          <a
+            [routerLink]="item.path"
+            class="nav-link"
+          >{{t(item.i18n)}}</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</ng-template>

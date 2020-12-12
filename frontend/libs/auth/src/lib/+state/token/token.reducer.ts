@@ -1,7 +1,7 @@
 import { createMutableReducer, mutableOn } from 'ngrx-etc';
 import { createInitialTokenState, TokenState, TokenStatus } from './token.state';
 import { TokenActions } from './token.actions';
-import { AuthSuccess } from '../../model/auth-success.model';
+import { AuthSuccess } from '../../models/auth-success.model';
 
 export const tokenReducer = createMutableReducer<TokenState>(
   createInitialTokenState(),

@@ -4,15 +4,14 @@ import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { LocalStorageService } from '@tracker/shared-utils';
-import { provideAuthDefaultConfig } from '../../testing/auth-config.test-data';
+import { provideAuthDefaultConfig } from '../../../testing/auth-config.test-data';
 import { TokenEffects } from './token.effects';
 import { AuthService } from '../../services/auth.service';
 import { TokenSelectors } from './token.selectors';
 import { TokenActions } from './token.actions';
 import { AuthActions } from '@tracker/auth';
 import { cold, hot } from 'jasmine-marbles';
-import { createAuthSuccess } from '../../testing/models/auth-success-model.test-data';
-import { waitForAsync } from '@angular/core/testing';
+import { createAuthSuccess } from '../../../testing/models/auth-success-model.test-data';
 
 describe('TokenEffects', () => {
   const createEffects = createServiceFactory({

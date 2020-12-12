@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { JwtResponse } from '../model/jwt-response.model';
-import { AuthSuccess } from '../model/auth-success.model';
+import { JwtResponse } from '../models/jwt-response.model';
+import { AuthSuccess } from '../models/auth-success.model';
 import { AUTH_CONFIG_TOKEN, AuthModuleConfig } from '../auth.config';
 
 @Injectable({

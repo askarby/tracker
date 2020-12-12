@@ -1,18 +1,13 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { interval, Observable, Subject, timer } from 'rxjs';
 import { map, take, takeUntil } from 'rxjs/operators';
 import { Milliseconds, Seconds } from '@tracker/shared-utils';
 import { AuthActions } from '../../+state/auth.actions';
 import { AUTH_CONFIG_TOKEN, AuthModuleConfig } from '../../auth.config';
-
-export enum CountdownModalResponse {
-  Continue = '[CountdownModalResponse] Continue',
-  Logout = '[CountdownModalResponse] Logout'
-}
+import { ModalController } from '@tracker/shell';
+import { Action } from '@ngrx/store';
 
 @Component({
-  selector: 'tracker-countdown-modal',
   templateUrl: './countdown-modal.component.html',
   styleUrls: ['./countdown-modal.component.scss']
 })
@@ -23,7 +18,7 @@ export class CountdownModalComponent implements OnInit, OnDestroy {
   private readonly countdownFromSeconds: number;
   private readonly onDestroy = new Subject();
 
-  constructor(private activeModal: NgbActiveModal,
+  constructor(private controller: ModalController<Action>,
               @Inject(AUTH_CONFIG_TOKEN) private config: AuthModuleConfig) {
     this.countdownFromSeconds = Seconds.fromMilliseconds(config.idleCountdownMilliseconds);
   }
@@ -39,7 +34,7 @@ export class CountdownModalComponent implements OnInit, OnDestroy {
     this.timeRemainingInSeconds$.pipe(
       takeUntil(this.onDestroy.asObservable())
     ).subscribe({
-      complete: () => this.activeModal.close(AuthActions.logout())
+      complete: () => this.logout()
     });
   }
 
@@ -49,11 +44,11 @@ export class CountdownModalComponent implements OnInit, OnDestroy {
   }
 
   continue(): void {
-    this.activeModal.close(CountdownModalResponse.Continue);
+    this.controller.close();
   }
 
   logout(): void {
-    this.activeModal.close(CountdownModalResponse.Logout);
+    this.controller.close(AuthActions.logout());
   }
 
 }

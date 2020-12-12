@@ -1,0 +1,30 @@
+{
+  "site": {
+    "navigation": {
+      "toggle": "Toggle navigation"
+    },
+    "social": {
+      "facebook": {
+        "title": "Facebook",
+        "tooltip": "Like us on Facebook"
+      },
+      "instagram": {
+        "title": "Instagram",
+        "tooltip": "Follow us on Instagram"
+      },
+      "twitter": {
+        "title": "Twitter",
+        "tooltip": "Follow us on Twitter"
+      },
+      "github": {
+        "title": "Github",
+        "tooltip": "Star us on Github"
+      }
+    },
+    "auth": {
+      "login": {
+        "text": "Login"
+      }
+    }
+  }
+}

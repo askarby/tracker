@@ -14,7 +14,11 @@
       "severity": "warn"
     },
     "forin": true,
-    "import-blacklist": [true, "rxjs/Rx"],
+    "import-blacklist": [
+      true,
+      "rxjs/Rx",
+      "@ngneat/spectator"
+    ],
     "interface-over-type-literal": true,
     "member-access": false,
     "member-ordering": [
@@ -69,7 +73,35 @@
           },
           {
             "sourceTag": "scope:auth",
+            "onlyDependOnLibsWithTags": [
+              "scope:shared",
+              "scope:shell"
+            ]
+          },
+          {
+            "sourceTag": "scope:shell",
             "onlyDependOnLibsWithTags": ["scope:shared"]
+          },
+          {
+            "sourceTag": "scope:time",
+            "onlyDependOnLibsWithTags": [
+              "scope:shared",
+              "scope:shell"
+            ]
+          },
+          {
+            "sourceTag": "scope:transport",
+            "onlyDependOnLibsWithTags": [
+              "scope:shared",
+              "scope:shell"
+            ]
+          },
+          {
+            "sourceTag": "scope:dashboard",
+            "onlyDependOnLibsWithTags": [
+              "scope:shared",
+              "scope:shell"
+            ]
           }
         ]
       }
@@ -87,6 +119,7 @@
     "template-banana-in-box": true,
     "template-no-negated-async": true,
     "use-lifecycle-interface": true,
-    "use-pipe-transform-interface": true
+    "use-pipe-transform-interface": true,
+    "quotemark": [true, "single", "avoid-escape"]
   }
 }

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'tracker-login-form',
+  selector: 'auth-login-form',
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -14,6 +14,8 @@ export class LoginFormComponent {
   @Output()
   login = new EventEmitter();
 
+  usernameFocus = false;
+  passwordFocus = false;
   showErrors = false;
 
   get username(): FormControl {

@@ -7,12 +7,13 @@ import { MockComponents } from 'ng-mocks';
 import { provideMockStore } from '@ngrx/store/testing';
 import { HttpClient } from '@angular/common/http';
 import { EMPTY } from 'rxjs';
+import { SocialLoginPanelComponent } from '../../components/social-login-panel/social-login-panel.component';
 
 describe('LoginPageComponent', () => {
   const createComponent = createComponentFactory({
     component: LoginPageComponent,
     declarations: [
-      MockComponents(LoginFormComponent)
+      MockComponents(LoginFormComponent, SocialLoginPanelComponent)
     ],
     providers: [
       provideMockStore(),

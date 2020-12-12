@@ -1,0 +1,19 @@
+{
+  "app": {
+    "navigation": {
+      "admin": {
+        "dashboard": "Dashboard"
+      },
+      "site": {
+        "home": "Home",
+        "functionality": "Functionality",
+        "pricing": "Pricing"
+      },
+      "footer": {
+        "about-us": "About us",
+        "terms-of-usage": "Terms of Usage",
+        "licensing": "Licensing"
+      }
+    }
+  }
+}

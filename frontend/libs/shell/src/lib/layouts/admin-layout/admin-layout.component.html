@@ -1,0 +1,19 @@
+<!-- Sidenav -->
+<div class="" (window:resize)="isMobile($event)">
+  <shell-admin-sidebar
+    [items]="sidebar$ | async"
+    [ngClass]="{ 'sidenav fixed-left': isMobileResolution === false }"
+    (toggleMenu)="toggleMenu($event)"
+  ></shell-admin-sidebar>
+
+  <div class="main-content">
+    <!-- Top navbar -->
+    <shell-admin-navbar></shell-admin-navbar>
+
+    <!-- Page content -->
+    <router-outlet></router-outlet>
+
+    <!-- Footer -->
+    <shell-footer [items]="footer$ | async"></shell-footer>
+  </div>
+</div>
