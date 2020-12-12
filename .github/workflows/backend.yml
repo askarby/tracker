@@ -2,6 +2,7 @@ name: backend
 on: 
   push:
     paths:
+    - '.github/**'
     - 'backend/**'
 jobs:
   run-tests:
