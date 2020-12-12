@@ -17,4 +17,4 @@ jobs:
         java-version: '11'
         java-package: jdk
         architecture: x64
-    - run: gradlew test
+    - run: ./gradlew test
