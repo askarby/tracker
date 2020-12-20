@@ -1,14 +1,9 @@
 package dk.innotech.tracker.auth;
 
+import dk.innotech.tracker.user.UserService;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.http.HttpRequest;
-import io.micronaut.security.authentication.AuthenticationException;
-import io.micronaut.security.authentication.AuthenticationFailed;
-import io.micronaut.security.authentication.AuthenticationProvider;
-import io.micronaut.security.authentication.AuthenticationRequest;
-import io.micronaut.security.authentication.AuthenticationResponse;
-import io.micronaut.security.authentication.UserDetails;
-import io.reactivex.BackpressureStrategy;
+import io.micronaut.security.authentication.*;
 import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 
@@ -18,29 +13,35 @@ import java.util.HashMap;
 
 @Singleton
 public class AuthenticationProviderUserPassword implements AuthenticationProvider {
+    private final UserService userService;
+
+    public AuthenticationProviderUserPassword(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public Publisher<AuthenticationResponse> authenticate(@Nullable HttpRequest<?> httpRequest, AuthenticationRequest<?, ?> authenticationRequest) {
-        return Flowable.create(emitter -> {
-            if (authenticationRequest.getIdentity().equals("sherlock") &&
-                    authenticationRequest.getSecret().equals("password")) {
-                var roles = new ArrayList<String>();
-                roles.add("ROLE_ADMIN");
+        String username = (String) authenticationRequest.getIdentity();
+        String password = (String) authenticationRequest.getSecret();
+        return userService.fromValidCredentials(username, password)
+                .map((user) -> {
+                    var roles = new ArrayList<String>();
+                    roles.add("ROLE_ADMIN");
 
 
-                var etc = new HashMap<String, Object>();
-                etc.put("idleTimeoutMinutes", 5);
-                etc.put("fullName", "Mr. Sherlock Holmes");
+                    var etc = new HashMap<String, Object>();
+                    etc.put("idleTimeoutMinutes", 5);
+                    etc.put("fullName", user.getFullName());
 
-                var attributes = new HashMap<String, Object>();
-                attributes.put("etc", etc);
+                    var attributes = new HashMap<String, Object>();
+                    attributes.put("etc", etc);
 
+                    return new UserDetails(user.getUsername(), roles, attributes);
+                })
+                .cast(AuthenticationResponse.class)
+                .onErrorResumeNext(t -> {
+                    return Flowable.just(new AuthenticationFailed());
+                });
 
-                emitter.onNext(new UserDetails((String) authenticationRequest.getIdentity(), roles, attributes));
-                emitter.onComplete();
-            } else {
-                emitter.onError(new AuthenticationException(new AuthenticationFailed()));
-            }
-        }, BackpressureStrategy.ERROR);
     }
 }

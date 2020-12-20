@@ -49,3 +49,16 @@ datasources:
     password: ''
     schema-generate: CREATE_DROP
     dialect: H2
+jpa:
+  default:
+    entity-scan:
+      packages:
+        - dk.innotech.tracker.auth
+        - dk.innotech.tracker.user
+    properties:
+      hibernate:
+        bytecode:
+          provider: none
+        hbm2ddl:
+          auto: update
+        show_sql: true
