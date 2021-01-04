@@ -1,0 +1,54 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.1'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id "io.freefair.lombok" version "5.3.0"
+	id 'java'
+}
+
+group = 'dk.innotech'
+version = '0.0.1-SNAPSHOT'
+
+java.sourceCompatibility = JavaVersion.VERSION_15
+java.targetCompatibility = JavaVersion.VERSION_15
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Boot starters
+	implementation "org.springframework.boot:spring-boot-starter"
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+	implementation "org.springframework.boot:spring-boot-starter-web"
+	implementation "org.springframework.boot:spring-boot-starter-actuator"
+	implementation "org.springframework.boot:spring-boot-starter-security"
+	implementation "org.springframework.boot:spring-boot-starter-validation"
+
+	// Swagger
+	implementation "io.springfox:springfox-boot-starter:3.0.0"
+	implementation "io.springfox:springfox-swagger-ui:3.0.0"
+	implementation "io.springfox:springfox-bean-validators:3.0.0"
+
+	// Misc
+	implementation "org.mapstruct:mapstruct:1.4.1.Final"
+	implementation "io.jsonwebtoken:jjwt:0.9.1"
+
+	// Monitoring
+	implementation "io.micrometer:micrometer-registry-prometheus:latest.release"
+
+	// Database
+	runtimeOnly "com.h2database:h2"
+	runtimeOnly "org.flywaydb:flyway-core"
+
+
+	// Annotation processors
+	annotationProcessor "org.mapstruct:mapstruct-processor:1.4.1.Final"
+
+	// Testing
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
+	testImplementation "org.junit.jupiter:junit-jupiter:5.4.0"
+}
+
+test {
+	useJUnitPlatform()
+}
