@@ -1,19 +1,16 @@
 package dk.innotech.user.entities;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@Builder
 public class UserRoleKey implements Serializable {
     @Column(name = "user_id", nullable = false)
     Long userId;

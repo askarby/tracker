@@ -3,22 +3,18 @@ package dk.innotech.user.dtos;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@NoArgsConstructor
-@ApiModel(description = "User model")
-public class UserDTO {
-    @ApiModelProperty(notes = "Unique identifier of user", example = "1L", required = true)
-    private Long id;
-
-    @ApiModelProperty(notes = "Auditing information", required = true)
-    private AuditDTO audit;
-
+@ApiModel(description = "Model for creating a user")
+public class CreateUserDTO {
     @ApiModelProperty(notes = "Username of user", example = "johndoe", required = true)
     private String username;
+
+    @ApiModelProperty(notes = "Desired password of user", example = "secret_and_secure_password", required = true)
+    private String password;
 
     @ApiModelProperty(notes = "Full name of user", example = "John Doe", required = true)
     private String fullName;
@@ -34,4 +30,8 @@ public class UserDTO {
                     """
     )
     private Map<String, Long> rolesWithExpiration;
+
+    public CreateUserDTO() {
+        rolesWithExpiration = new HashMap<>();
+    }
 }

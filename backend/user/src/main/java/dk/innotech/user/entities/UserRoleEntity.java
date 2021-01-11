@@ -1,8 +1,6 @@
 package dk.innotech.user.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -11,6 +9,8 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserRoleEntity {
     @EmbeddedId
     private UserRoleKey id;
@@ -22,7 +22,7 @@ public class UserRoleEntity {
 
     @ManyToOne
     @MapsId("name")
-    @JoinColumn(name = "name")
+    @JoinColumn(name = "role_name")
     private RoleEntity role;
 
     @Column(name = "expires_at", nullable = false)

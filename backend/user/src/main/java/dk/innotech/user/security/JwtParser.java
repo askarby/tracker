@@ -1,7 +1,6 @@
 package dk.innotech.user.security;
 
 import io.jsonwebtoken.*;
-import javassist.Loader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -9,9 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,11 +38,10 @@ public class JwtParser {
     }
 
     public List<GrantedAuthority> getRolesFromToken(String authToken) {
-        List<SimpleGrantedAuthority> roles = null;
         Claims claims = parseClaims(authToken).getBody();
         List<String> rolesFromClaims = claims.get("roles", List.class);
         return rolesFromClaims.stream()
-                .map(raw -> new SimpleGrantedAuthority(raw))
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 

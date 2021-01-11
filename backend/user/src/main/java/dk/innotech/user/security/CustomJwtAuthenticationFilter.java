@@ -1,5 +1,6 @@
 package dk.innotech.user.security;
 
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -14,21 +15,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@AllArgsConstructor
 public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtParser jwtTokenUtil;
-
-    public CustomJwtAuthenticationFilter(JwtParser jwtTokenUtil) {
-        this.jwtTokenUtil = jwtTokenUtil;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
         if (!request.getRequestURI().equals("/login")) {
-            // JWT Token is in the form "Bearer token". Remove Bearer word and
-            // get  only the Token
+            // JWT Token is in the form "Bearer <token>". Remove Bearer word and get  only the Token
             String jwtToken = extractJwtFromRequest(request);
 
             if (StringUtils.hasText(jwtToken) && jwtTokenUtil.validateToken(jwtToken)) {
