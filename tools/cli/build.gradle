@@ -1,0 +1,39 @@
+plugins {
+    id 'application'
+    id 'com.palantir.graal' version '0.7.2'
+}
+
+java.sourceCompatibility = JavaVersion.VERSION_11
+java.targetCompatibility = JavaVersion.VERSION_11
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    // Picocli
+    implementation 'info.picocli:picocli:4.1.0'
+
+    // Misc
+    implementation "org.mindrot:jbcrypt:0.4"
+
+    // Annotation processors
+    annotationProcessor 'info.picocli:picocli:4.1.0'
+
+    // Testing
+    testImplementation "org.junit.jupiter:junit-jupiter:5.4.0"
+}
+
+application {
+    mainClass = 'dk.innotech.cli.Application'
+}
+
+graal {
+    mainClass 'dk.innotech.cli.Application'
+    outputName 'tt'
+    javaVersion '11'
+}
+
+test {
+    useJUnitPlatform()
+}
