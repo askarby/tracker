@@ -1,6 +1,7 @@
 package dk.innotech.user.entities.auditing;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -14,7 +15,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@SuperBuilder(toBuilder = true)
 public class AuditedEntity {
     @Column(name = "created_on", nullable = false, updatable = false)
     @CreatedDate

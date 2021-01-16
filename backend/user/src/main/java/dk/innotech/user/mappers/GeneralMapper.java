@@ -3,10 +3,7 @@ package dk.innotech.user.mappers;
 import dk.innotech.user.dtos.AuditDTO;
 import dk.innotech.user.dtos.AuditDetailsDTO;
 import dk.innotech.user.entities.auditing.AuditedEntity;
-import dk.innotech.user.mappers.annotations.AuditingFromEntity;
-import dk.innotech.user.mappers.annotations.DanishTextFromMap;
-import dk.innotech.user.mappers.annotations.EnglishTextFromMap;
-import dk.innotech.user.mappers.annotations.EpochMillisecondsFromInstant;
+import dk.innotech.user.mappers.annotations.*;
 import dk.innotech.user.models.Language;
 import org.mapstruct.Mapper;
 
@@ -20,11 +17,23 @@ public interface GeneralMapper {
 
     @AuditingFromEntity
     static AuditDTO auditToDTO(AuditedEntity audit) {
-        var builder = AuditDTO.builder()
-                .created(AuditDetailsDTO.builder().timestamp(audit.getCreatedOn().toEpochMilli()).userId(audit.getCreatedBy()).build());
+        var builder = AuditDTO.builder();
+        if (audit.getCreatedOn() != null && audit.getCreatedBy() != null) {
+            builder.created(
+                    AuditDetailsDTO.builder()
+                            .timestamp(audit.getCreatedOn().toEpochMilli())
+                            .userId(audit.getCreatedBy())
+                            .build()
+            );
+        }
 
         if (audit.getUpdatedOn() != null && audit.getUpdatedBy() != null) {
-            builder.updated(AuditDetailsDTO.builder().timestamp(audit.getUpdatedOn().toEpochMilli()).userId(audit.getUpdatedBy()).build());
+            builder.updated(
+                    AuditDetailsDTO.builder()
+                            .timestamp(audit.getUpdatedOn().toEpochMilli())
+                            .userId(audit.getUpdatedBy())
+                            .build()
+            );
         }
 
         return builder.build();
@@ -43,5 +52,10 @@ public interface GeneralMapper {
     @EpochMillisecondsFromInstant
     static Long millisecondsFromInstant(Instant instant) {
         return ofNullable(instant).map(Instant::toEpochMilli).orElse(null);
+    }
+
+    @InstantFromEpochMilliseconds
+    static Instant instantFromMilliseconds(long milliseconds) {
+        return Instant.ofEpochMilli(milliseconds);
     }
 }

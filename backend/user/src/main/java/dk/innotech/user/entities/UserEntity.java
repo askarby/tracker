@@ -2,6 +2,7 @@ package dk.innotech.user.entities;
 
 import dk.innotech.user.entities.auditing.AuditedEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -11,8 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@SuperBuilder(toBuilder = true)
 public class UserEntity extends AuditedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

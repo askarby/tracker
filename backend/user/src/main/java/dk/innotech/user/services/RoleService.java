@@ -26,12 +26,11 @@ public class RoleService {
     public RoleDTO createRole(RoleDTO request) {
         ensure(request, of(RoleChecks.Available));
 
-        var role = RoleEntity.builder()
-                .name(request.getName())
-                .defaultRole(false)
-                .title(Language.DANISH, request.getDaTitle())
-                .title(Language.ENGLISH, request.getEnTitle())
-                .build();
+        var role = roleMapper.toRoleEntity(request);
+
+        // Never allow "default role" to be created (it's injected through SQL scripts ONLY!),
+        // instead, make it a non-default role (don't produce an error)
+        role.setDefaultRole(false);
 
         var persistedRole = roleRepository.save(role);
         return roleMapper.toRoleDto(persistedRole);
@@ -78,6 +77,7 @@ public class RoleService {
             checks.add(RoleChecks.Exists);
         }
 
+        // Perform checks based on provided EnumSet
         var name = candidate.getName();
         var existing = getRole(name);
         if (checks.contains(RoleChecks.Available) && existing.isPresent()) {
