@@ -4,11 +4,12 @@
 
 create table role
 (
-    name       varchar(255)                          not null,
-    created_on timestamp default CURRENT_TIMESTAMP() not null,
-    created_by bigint                                not null,
-    updated_on timestamp,
-    updated_by bigint,
+    name            varchar(255)                          not null,
+    created_on      timestamp default CURRENT_TIMESTAMP() not null,
+    created_by      bigint                                not null,
+    updated_on      timestamp,
+    updated_by      bigint,
+    is_default_role boolean   default FALSE,
     primary key (name)
 );
 
@@ -41,6 +42,9 @@ create table user_role
     primary key (role_name, user_id)
 );
 
+alter table user
+    add constraint UC_user_unique_username unique (username);
+
 alter table role_title
     add constraint FK_role_name_on_role
         foreign key (role_name)
@@ -61,10 +65,10 @@ alter table user_role
 -- --------------------------------------
 
 -- Default Roles
-insert into role (created_by, name)
-values (1, 'ROLE_SYSTEM'),
-       (1, 'ROLE_USER'),
-       (1, 'ROLE_ADMIN');
+insert into role (created_by, name, is_default_role)
+values (1, 'ROLE_SYSTEM', TRUE),
+       (1, 'ROLE_USER', TRUE),
+       (1, 'ROLE_ADMIN', TRUE);
 
 insert into role_title(role_name, language, text)
 values ('ROLE_SYSTEM', 'DANISH', 'System-rolle (kan ikke tildeles brugere som oprettes)'),

@@ -25,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String[] UNSECURED_PATHS = {
-            "/login", "/swagger", "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**", "/h2-console/**"
+            "/user/register", "/login", "/swagger", "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**", "/h2-console/**"
     };
 
     private final CustomUserDetailsService userDetailsService;

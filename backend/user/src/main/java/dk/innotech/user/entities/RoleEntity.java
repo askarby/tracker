@@ -1,27 +1,27 @@
 package dk.innotech.user.entities;
 
-import dk.innotech.user.entities.auditing.Audit;
-import dk.innotech.user.entities.auditing.AuditListener;
+import dk.innotech.user.entities.auditing.AuditedEntity;
 import dk.innotech.user.models.Language;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
 @Entity(name = "role")
-@EntityListeners(AuditListener.class)
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RoleEntity {
+public class RoleEntity extends AuditedEntity {
     @Id
     private String name;
 
-    @Embedded
-    private Audit audit;
+    @Column(name = "is_default_role", updatable = false)
+    private boolean defaultRole;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "role_title")
@@ -29,7 +29,8 @@ public class RoleEntity {
     @MapKeyClass(Language.class)
     @MapKeyEnumerated(EnumType.STRING)
     @Column(name = "text", nullable = false)
-    protected final Map<Language, String> titles = new HashMap<>();
+    @Singular
+    private Map<Language, String> titles;
 
     public void setTitle(Language language, String title) {
         titles.put(language, title);

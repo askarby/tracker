@@ -2,15 +2,19 @@ package dk.innotech.user.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.*;
 
+import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
 public class ErrorResponse {
@@ -54,6 +58,8 @@ public class ErrorResponse {
                     .stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(toList()));
+        } else if (error instanceof Throwable) {
+            asString = ((Throwable) error).getMessage();
         }
 
         if (asString != null) {

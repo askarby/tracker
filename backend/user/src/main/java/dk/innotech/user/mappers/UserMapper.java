@@ -4,6 +4,7 @@ import dk.innotech.user.dtos.UserDTO;
 import dk.innotech.user.dtos.UserListingDTO;
 import dk.innotech.user.entities.UserEntity;
 import dk.innotech.user.entities.UserRoleEntity;
+import dk.innotech.user.mappers.annotations.AuditingFromEntity;
 import dk.innotech.user.mappers.annotations.UserRolesToMap;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,6 +21,7 @@ import java.util.List;
 public interface UserMapper {
 
     @Mapping(source = "userRoleEntities", target = "rolesWithExpiration", qualifiedBy = UserRolesToMap.class)
+    @Mapping(source = "entity", target = "audit", qualifiedBy = AuditingFromEntity.class)
     UserDTO toUserDto(UserEntity entity, List<UserRoleEntity> userRoleEntities);
 
     UserListingDTO toUserListingDto(UserEntity entity);
