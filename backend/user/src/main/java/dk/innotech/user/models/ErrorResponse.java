@@ -2,6 +2,7 @@ package dk.innotech.user.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Singular;
 import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
@@ -47,7 +48,7 @@ public class ErrorResponse {
         } else if (error instanceof AuthenticationException) {
             var authException = (AuthenticationException)error;
             if (authException.getCause() != null) {
-                asString = authException.getCause().toString() + " " + authException.getMessage();
+                asString = authException.getCause().getMessage() + " - " + authException.getMessage();
             } else {
                 asString = authException.getMessage();
             }
@@ -69,7 +70,7 @@ public class ErrorResponse {
 
     public Map<String, Object> asMap() {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put(TIMESTAMP_KEY, new Date());
+        body.put(TIMESTAMP_KEY, timestamp);
         body.put(STATUS_KEY, status);
         body.put(ERRORS_KEY, errors);
         return body;

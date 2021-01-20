@@ -1,68 +1,59 @@
 package dk.innotech.user.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import dk.innotech.user.dtos.AuditDTO;
-import dk.innotech.user.dtos.AuditDetailsDTO;
 import dk.innotech.user.dtos.RoleDTO;
 import dk.innotech.user.services.RoleService;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Instant;
+import static dk.innotech.user.assertions.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@SpringBootTest
-@AutoConfigureMockMvc
-@DisplayName("Mocked MVC test for RoleController")
+@ExtendWith(MockitoExtension.class)
+@DisplayName("Unit test for RoleController")
 public class RoleControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @InjectMocks
+    private RoleController controller;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private RoleService roleService;
+    @Mock
+    private RoleService service;
 
     @Test
-    @WithMockUser(username = "john", roles={"ADMIN"})
-    public void createRole() throws Exception {
-        // Given
-        var toCreate = RoleDTO.builder()
-                .name("ROLE_TEST")
-                .daTitle("Test-rolle")
-                .enTitle("Role for test")
-                .build();
+    @DisplayName("should be documented with Swagger")
+    public void documented() {
+        assertThat(RoleController.class).hasApiAnnotation().withTags("Role");
+    }
 
-        var audit = AuditDTO.builder()
-                .created(AuditDetailsDTO.builder().userId(1L).timestamp(Instant.now().toEpochMilli()).build())
-                .build();
-        var response = toCreate.toBuilder().audit(audit).build();
+    @Nested
+    @DisplayName("create role")
+    class Create {
+        @Test
+        @DisplayName("should invoke RoleService")
+        public void invokeService() {
+            var toCreate = RoleDTO.builder()
+                    .name("ROLE_TEST")
+                    .daTitle("Test-rolle")
+                    .enTitle("Role for test")
+                    .build();
 
-        // When
-        when(roleService.createRole(toCreate)).thenReturn(response);
+            controller.createRole(toCreate);
 
-        // Then
-        var request = post("/role/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(toCreate));
+            verify(service).createRole(eq(toCreate));
+        }
 
-        this.mockMvc.perform(request)
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+        @Test
+        @DisplayName("should be documented with Swagger")
+        public void documented() {
+            assertThat(RoleController.class)
+                    .hasApiOperationAnnotation("createRole")
+                    .withValue()
+                    .withNotes();
+        }
     }
 }
