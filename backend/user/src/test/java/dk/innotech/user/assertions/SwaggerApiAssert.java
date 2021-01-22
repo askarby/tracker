@@ -12,7 +12,7 @@ public class SwaggerApiAssert extends ClassAssert<SwaggerApiAssert> {
     SwaggerApiAssert(Class<?> actual, Api annotation) {
         super(actual, SwaggerApiAssert.class);
         this.annotation = annotation;
-        annotationName = annotation.getClass().getName();
+        annotationName = annotation.getClass().getCanonicalName();
     }
 
     public SwaggerApiAssert withValue() {

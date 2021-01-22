@@ -1,62 +1,28 @@
 package dk.innotech.user.assertions;
 
 import org.assertj.core.api.AbstractAssert;
+import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
+import java.util.function.Supplier;
 
 public abstract class ClassAssert<SELF extends AbstractAssert<SELF, Class<?>>> extends AbstractAssert<SELF, Class<?>> {
+    private AnnotationSelector selector;
+
     public ClassAssert(Class<?> actual, Class<?> selfType) {
         super(actual, selfType);
+        selector = AnnotationSelector.of(actual);
     }
 
-    protected <T extends Annotation> T getClassAnnotation(Class<T> annotationType) {
-        isNotNull();
-
-        var annotation = actual.getAnnotation(annotationType);
-        if (annotation == null) {
-            failWithMessage("Expected class to have annotation of type %s", annotationType);
+    protected void hasStringAnnotationProperty(Annotation annotation, String propertyName, Supplier<String> propertyValue, String expected) {
+        var actual = propertyValue.get();
+        var annotationName = annotation.getClass().getCanonicalName();
+        if (expected == null) {
+            if (!StringUtils.hasText(actual)) {
+                failWithMessage("Expected %s-annotation to have a %s", annotationName, propertyName);
+            }
+        } else if (!expected.equals(actual)) {
+            failWithMessage("Expected %s-annotation to have a %s of '%s'", annotationName, propertyName, expected);
         }
-        return annotation;
-    }
-
-    protected <T extends Annotation> T getMethodAnnotation(String methodName, Class<T> annotationType) {
-        var annotations = getMethodAnnotations(methodName, annotationType);
-        if (annotations.size() != 1) {
-            failWithMessage("Expected class to have method (named: '%s') with annotation of type %s",
-                    methodName, annotationType);
-        }
-        return (T)annotations.get(0);
-    }
-
-    protected <T extends Annotation> List<T> getMethodAnnotations(String methodName, Class<?>... annotationTypes) {
-        var methods = Arrays.stream(actual.getMethods())
-                .filter(candidate -> candidate.getName().equals(methodName))
-                .collect(toList());
-
-        if (methods.size() != 1) {
-            failWithMessage("Expected class to have singular method named: '%s'", methodName);
-        }
-
-        var annotations = Arrays.stream(methods.get(0).getAnnotations())
-                .filter(each -> {
-                    for (var annotationType : annotationTypes) {
-                        if (each.annotationType().isAssignableFrom(annotationType)) {
-                            return true;
-                        }
-                    }
-                    return false;
-                })
-                .collect(toList());
-        if (annotations.isEmpty()) {
-            var types = Arrays.stream(annotationTypes).map(Class::getName).collect(Collectors.joining(", "));
-            failWithMessage("Expected class to have method (named: '%s') with annotation(s) of type(s) %s",
-                    methodName, types);
-        }
-        return (List<T>) annotations;
     }
 }

@@ -12,7 +12,7 @@ public class SwaggerApiOperationAssert extends ClassAssert<SwaggerApiOperationAs
     SwaggerApiOperationAssert(Class<?> actual, ApiOperation annotation) {
         super(actual, SwaggerApiOperationAssert.class);
         this.annotation = annotation;
-        annotationName = annotation.getClass().getName();
+        annotationName = annotation.getClass().getCanonicalName();
     }
 
     public SwaggerApiOperationAssert withValue() {
@@ -20,14 +20,7 @@ public class SwaggerApiOperationAssert extends ClassAssert<SwaggerApiOperationAs
     }
 
     public SwaggerApiOperationAssert withValue(String expected) {
-        var actual = annotation.value();
-        if (expected == null) {
-            if (!StringUtils.hasText(actual)) {
-                failWithMessage("Expected %s-annotation to have a value", annotationName);
-            }
-        } else if (!expected.equals(actual)) {
-            failWithMessage("Expected %s-annotation to have a value of '%s'", annotationName, expected);
-        }
+        hasStringAnnotationProperty(annotation, "value", annotation::value, expected);
         return this;
     }
 
@@ -36,14 +29,7 @@ public class SwaggerApiOperationAssert extends ClassAssert<SwaggerApiOperationAs
     }
 
     public SwaggerApiOperationAssert withNotes(String expected) {
-        var actual = annotation.notes();
-        if (expected == null) {
-            if (!StringUtils.hasText(actual)) {
-                failWithMessage("Expected %s-annotation to have notes", annotationName);
-            }
-        } else if (!expected.equals(actual)) {
-            failWithMessage("Expected %s-annotation to have notes being '%s'", annotationName, expected);
-        }
+        hasStringAnnotationProperty(annotation, "notes", annotation::notes, expected);
         return this;
     }
 

@@ -11,7 +11,7 @@ public class SwaggerApiResponseAssert extends ClassAssert<SwaggerApiResponseAsse
     SwaggerApiResponseAssert(Class<?> actual, List<ApiResponse> annotations) {
         super(actual, SwaggerApiResponseAssert.class);
         this.annotations = annotations;
-        annotationName = ApiResponse.class.getName();
+        annotationName = ApiResponse.class.getCanonicalName();
     }
 
     public SwaggerApiResponseAssert withCode(int code) {
