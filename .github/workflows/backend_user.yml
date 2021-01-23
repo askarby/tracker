@@ -2,7 +2,7 @@ name: backend_user
 on: 
   push:
     paths:
-    - '.github/backend_user.yml'
+    - '.github/workflows/backend_user.yml'
     - 'backend/user/**'
 jobs:
   run-tests:
