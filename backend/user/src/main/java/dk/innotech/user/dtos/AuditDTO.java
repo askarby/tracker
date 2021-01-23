@@ -1,6 +1,7 @@
 package dk.innotech.user.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import dk.innotech.user.json.EmptyAuditDetailsFilter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -14,11 +15,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @ApiModel(description = "Auditing information model")
 public class AuditDTO {
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = AuditDetailsDTO.class)
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = EmptyAuditDetailsFilter.class)
     @ApiModelProperty(notes = "Auditing information about creation", required = true)
     private AuditDetailsDTO created;
 
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = AuditDetailsDTO.class)
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = EmptyAuditDetailsFilter.class)
     @ApiModelProperty(notes = "Auditing information about updates")
     private AuditDetailsDTO updated;
 }

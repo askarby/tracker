@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static dk.innotech.user.assertions.Assertions.assertThat;
@@ -46,11 +47,16 @@ public class AuditDTOTest {
         assertThat(AuditDTO.class).hasApiModelField("updated").withNotes();
     }
 
-    @Test
-    @DisplayName("should serialize and deserialize (to and from JSON) as expected")
-    public void jsonSerialization() throws JsonProcessingException {
-        var asJson = mapper.writeValueAsString(dto);
-        var asObject = mapper.readValue(asJson, AuditDTO.class);
-        org.assertj.core.api.Assertions.assertThat(asObject).isEqualTo(dto);
+    @Nested
+    @DisplayName("JSON")
+    class Json {
+        @Test
+        @DisplayName("should serialize and deserialize (to and from JSON) as expected")
+        public void jsonSerialization() throws JsonProcessingException {
+            var asJson = mapper.writeValueAsString(dto);
+            System.out.println(asJson);
+            var asObject = mapper.readValue(asJson, AuditDTO.class);
+            org.assertj.core.api.Assertions.assertThat(asObject).isEqualTo(dto);
+        }
     }
 }

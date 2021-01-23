@@ -5,15 +5,13 @@ import dk.innotech.user.dtos.AuditDetailsDTO;
 public class EmptyAuditDetailsFilter {
     @Override
     public boolean equals(Object value) {
-        if (value == null) {
+        if (!(value instanceof AuditDetailsDTO)) {
             return true;
         }
 
         AuditDetailsDTO audit = (AuditDetailsDTO)value;
-        if (audit.getTimestamp() == null && audit.getUserId() == null) {
-            return true;
-        }
+        var isPopulated = audit.getTimestamp() != null && audit.getUserId() != null;
 
-        return false;
+        return !isPopulated;
     }
 }
