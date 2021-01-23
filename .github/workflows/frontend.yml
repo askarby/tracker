@@ -2,7 +2,7 @@ name: frontend
 on: 
   push:
     paths:
-    - '.github/**'
+    - '.github/frontend.yml'
     - 'frontend/**'
 jobs:
   build:
