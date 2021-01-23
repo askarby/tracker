@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static dk.innotech.user.assertions.Assertions.assertThat;
@@ -46,11 +47,24 @@ public class AuditDetailsDTOTest {
                 .thatIsRequired();
     }
 
-    @Test
-    @DisplayName("should serialize and deserialize (to and from JSON) as expected")
-    public void jsonSerialization() throws JsonProcessingException {
-        var asJson = mapper.writeValueAsString(dto);
-        var userId = JsonPath.read(asJson, "by");
-        org.assertj.core.api.Assertions.assertThat(userId).isEqualTo(dto.getUserId());
+    @Nested
+    @DisplayName("JSON")
+    class Json {
+
+        @Test
+        @DisplayName("should serialize and deserialize (to and from JSON) as expected")
+        public void jsonSerialization() throws JsonProcessingException {
+            var asJson = mapper.writeValueAsString(dto);
+            var asObject = mapper.readValue(asJson, AuditDetailsDTO.class);
+            org.assertj.core.api.Assertions.assertThat(asObject).isEqualTo(dto);
+        }
+
+        @Test
+        @DisplayName("should serialize and deserialize to custom property names")
+        public void customPropertyNames() throws JsonProcessingException {
+            var asJson = mapper.writeValueAsString(dto);
+            var userId = JsonPath.read(asJson, "by");
+            org.assertj.core.api.Assertions.assertThat(userId).isEqualTo(dto.getUserId());
+        }
     }
 }

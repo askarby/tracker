@@ -2,13 +2,14 @@ package dk.innotech.user.dtos;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Map;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder(toBuilder = true)
 @ApiModel(description = "User model")
 public class UserDTO {
     @ApiModelProperty(notes = "Unique identifier of user", example = "1L", required = true)
@@ -33,5 +34,6 @@ public class UserDTO {
                     }
                     """
     )
+    @Singular("roleWithExpiration")
     private Map<String, Long> rolesWithExpiration;
 }

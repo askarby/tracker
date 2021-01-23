@@ -5,6 +5,7 @@ import org.assertj.core.api.AbstractAssert;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 import static org.mockito.Mockito.mock;
@@ -83,9 +84,9 @@ public class JavaBeanAssert extends AbstractAssert<JavaBeanAssert, Class<?>> {
         }
     }
 
-    private <T> T createDummyValue(Class<T> type) {
+    private Object createDummyValue(Class<?> type) {
         var random = new Random();
-        Object value = null;
+        Object value;
         if (Integer.TYPE.isAssignableFrom(type) || Integer.class.isAssignableFrom(type)) {
             value = random.nextInt();
         } else if (Long.TYPE.isAssignableFrom(type) || Long.class.isAssignableFrom(type)) {
@@ -99,10 +100,10 @@ public class JavaBeanAssert extends AbstractAssert<JavaBeanAssert, Class<?>> {
         } else if (String.class.isAssignableFrom(type)) {
             byte[] array = new byte[7]; // length is bounded by 7
             new Random().nextBytes(array);
-            value =  new String(array, Charset.forName("UTF-8"));
+            value = new String(array, StandardCharsets.UTF_8);
         } else {
             value = mock(type);
         }
-        return type.cast(value);
+        return value;
     }
 }

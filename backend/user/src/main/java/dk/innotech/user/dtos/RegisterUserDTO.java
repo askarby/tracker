@@ -4,13 +4,17 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.Extension;
 import io.swagger.annotations.ExtensionProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @ApiModel(description = "Model for registering a user")
 public class RegisterUserDTO {
     @ApiModelProperty(notes = "Username of user", example = "johndoe", required = true)
