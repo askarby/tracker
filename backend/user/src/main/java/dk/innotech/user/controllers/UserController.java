@@ -31,12 +31,55 @@ public class UserController {
                     ℹ️ This endpoint is not the same as registering a user. 
                     """
     )
+    @ApiResponses({
+            @ApiResponse(code = 404, message = "Unable to create user, when unable to find roles"),
+            @ApiResponse(code = 409, message = "Unable to create user, due to naming conflict")
+    })
     @RequestMapping(value = {"/"}, method = RequestMethod.POST)
     @Secured("ROLE_ADMIN")
     public UserDTO createUser(@ApiParam("Request to create user from")
                               @RequestBody
                               @Valid CreateUserDTO request) {
         return userService.createUser(request);
+    }
+
+    @ApiOperation(
+            value = "Updates an existing user",
+            notes = """
+                    Updates an existing user.
+                                        
+                    This endpoint is meant to be used as a means for administrators to update (alter) an already existing user.
+                    
+                    ℹ️ Any id provided in request body is overridden by that in path.
+                    """
+    )
+    @ApiResponses({
+            @ApiResponse(code = 404, message = "Unable to find user to update")
+    })
+    @RequestMapping(value = {"/{id}"}, method = RequestMethod.PUT)
+    @Secured("ROLE_ADMIN")
+    public UserDTO updateUser(@ApiParam("Request to create user from")
+                              @PathVariable("id") Long id,
+                              @RequestBody
+                              @Valid UserDTO request) {
+        return userService.updateUser(id, request);
+    }
+
+    @ApiOperation(
+            value = "Removes an existing user",
+            notes = """
+                    Removes an existing user.
+                                        
+                    This endpoint is meant to be used as a means for administrators to remove an already existing user.
+                    """
+    )
+    @ApiResponses({
+            @ApiResponse(code = 404, message = "Unable to find user to remove")
+    })
+    @RequestMapping(value = {"/{id}"}, method = RequestMethod.DELETE)
+    @Secured("ROLE_ADMIN")
+    public void deleteUser(@ApiParam("Id of user to remove") @PathVariable("id") Long id) {
+        userService.deleteUser(id);
     }
 
     @ApiOperation(
@@ -49,6 +92,9 @@ public class UserController {
                     ℹ️ This endpoint is not meant to be used as a means for administrators to create users.
                     """
     )
+    @ApiResponses({
+            @ApiResponse(code = 409, message = "Unable to register user, due to naming conflict")
+    })
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
     public UserDTO registerUser(@ApiParam("Request to register user from")
                                 @RequestBody

@@ -69,6 +69,16 @@ public class UserService {
     }
 
     @Transactional
+    public UserDTO updateUser(Long id, UserDTO request) {
+        return null;
+    }
+
+    @Transactional
+    public void deleteUser(Long id) {
+
+    }
+
+    @Transactional
     public UserDTO registerUser(RegisterUserDTO request) {
         ensureUsernameAvailable(request.getUsername());
 

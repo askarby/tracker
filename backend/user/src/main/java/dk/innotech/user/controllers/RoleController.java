@@ -46,6 +46,7 @@ public class RoleController {
                     """
     )
     @ApiResponses({
+            @ApiResponse(code = 400, message = "Unable to alter default (system) role"),
             @ApiResponse(code = 404, message = "Unable to find role to update")
     })
     @RequestMapping(value = {""}, method = RequestMethod.PUT)
@@ -64,6 +65,7 @@ public class RoleController {
                     """
     )
     @ApiResponses({
+            @ApiResponse(code = 400, message = "Unable to delete default (system) role"),
             @ApiResponse(code = 404, message = "Unable to find role to remove")
     })
     @RequestMapping(value = {"/{name}"}, method = RequestMethod.DELETE)

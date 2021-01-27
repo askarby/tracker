@@ -54,7 +54,6 @@ public class AuditDTOTest {
         @DisplayName("should serialize and deserialize (to and from JSON) as expected")
         public void jsonSerialization() throws JsonProcessingException {
             var asJson = mapper.writeValueAsString(dto);
-            System.out.println(asJson);
             var asObject = mapper.readValue(asJson, AuditDTO.class);
             org.assertj.core.api.Assertions.assertThat(asObject).isEqualTo(dto);
         }

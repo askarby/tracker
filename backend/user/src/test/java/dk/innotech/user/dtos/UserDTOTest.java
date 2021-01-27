@@ -54,7 +54,7 @@ public class UserDTOTest {
         assertThat(UserDTO.class).hasApiModelField("id")
                 .withNotes()
                 .withExample()
-                .thatIsRequired();
+                .thatIsOptional();
         assertThat(UserDTO.class).hasApiModelField("audit")
                 .withNotes()
                 .thatIsRequired();

@@ -13,8 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static dk.innotech.user.assertions.Assertions.assertThat;
 import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Unit test for RoleController")
@@ -38,11 +37,7 @@ public class RoleControllerTest {
         @Test
         @DisplayName("should invoke RoleService")
         public void invokeService() {
-            var toCreate = RoleDTO.builder()
-                    .name("ROLE_TEST")
-                    .daTitle("Test-rolle")
-                    .enTitle("Role for test")
-                    .build();
+            var toCreate = mock(RoleDTO.class);
 
             controller.createRole(toCreate);
 
@@ -70,11 +65,7 @@ public class RoleControllerTest {
         @Test
         @DisplayName("should invoke RoleService")
         public void invokeService() {
-            var toUpdate = RoleDTO.builder()
-                    .name("ROLE_TEST")
-                    .daTitle("Test-rolle")
-                    .enTitle("Role for test")
-                    .build();
+            var toUpdate = mock(RoleDTO.class);
 
             controller.updateRole(toUpdate);
 
@@ -93,6 +84,11 @@ public class RoleControllerTest {
                     .withFailMessage("Needs to have documentation for 'not found' code")
                     .hasApiResponseAnnotation("updateRole")
                     .withCode(404);
+
+            assertThat(RoleController.class)
+                    .withFailMessage("Needs to have documentation for 'bad request' code")
+                    .hasApiResponseAnnotation("updateRole")
+                    .withCode(400);
         }
     }
 
@@ -121,6 +117,11 @@ public class RoleControllerTest {
                     .withFailMessage("Needs to have documentation for 'not found' code")
                     .hasApiResponseAnnotation("deleteRole")
                     .withCode(404);
+
+            assertThat(RoleController.class)
+                    .withFailMessage("Needs to have documentation for 'bad request' code")
+                    .hasApiResponseAnnotation("deleteRole")
+                    .withCode(400);
         }
     }
 

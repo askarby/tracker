@@ -12,7 +12,7 @@ import java.util.Map;
 @Builder(toBuilder = true)
 @ApiModel(description = "User model")
 public class UserDTO {
-    @ApiModelProperty(notes = "Unique identifier of user", example = "1L", required = true)
+    @ApiModelProperty(notes = "Unique identifier of user", example = "1L", required = false)
     private Long id;
 
     @ApiModelProperty(notes = "Auditing information", required = true)

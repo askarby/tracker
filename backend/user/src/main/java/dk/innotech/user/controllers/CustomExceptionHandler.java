@@ -3,6 +3,7 @@ package dk.innotech.user.controllers;
 import dk.innotech.user.models.ErrorResponse;
 import dk.innotech.user.services.AlreadyExistsException;
 import dk.innotech.user.services.NotExistsException;
+import dk.innotech.user.services.UnmodifiableException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             status = HttpStatus.CONFLICT;
         } else if (ex instanceof NotExistsException) {
             status = HttpStatus.NOT_FOUND;
+        } else if (ex instanceof UnmodifiableException) {
+            status = HttpStatus.BAD_REQUEST;
         }
         return ErrorResponse.fromError(ex).asResponseEntity(headers, status);
     }

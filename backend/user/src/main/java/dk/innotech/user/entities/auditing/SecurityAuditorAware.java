@@ -28,7 +28,6 @@ public class SecurityAuditorAware implements AuditorAware<Long> {
                         var details = (UserDetailsFromDTO)principal;
                         return details.getDTO().getId();
                     } else {
-                        System.out.println("Principal is >> " + principal);
                         return SYSTEM_USER_ID;
                     }
                 })

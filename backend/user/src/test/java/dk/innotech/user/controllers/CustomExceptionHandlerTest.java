@@ -3,6 +3,7 @@ package dk.innotech.user.controllers;
 import dk.innotech.user.mocks.DummyBindingBean;
 import dk.innotech.user.services.AlreadyExistsException;
 import dk.innotech.user.services.NotExistsException;
+import dk.innotech.user.services.UnmodifiableException;
 import lombok.Data;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -83,7 +84,7 @@ public class CustomExceptionHandlerTest {
         }
 
         @Test
-        @DisplayName("should not pass on any headers, set status to conflict (409) when intercepting AlreadyExistsException")
+        @DisplayName("should not pass on any headers, set status to conflict (404) when intercepting NotExistsException")
         public void handleNotExistsException() {
             // Given
             var message = "Something does not exists, I'm gonna ka-boom!";
@@ -94,6 +95,22 @@ public class CustomExceptionHandlerTest {
 
             // Then
             assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+            assertThat(entity.getHeaders()).isEqualTo(HttpHeaders.EMPTY);
+            assertThat(entity.getBody()).asString().contains(message);
+        }
+
+        @Test
+        @DisplayName("should not pass on any headers, set status to conflict (400) when intercepting UnmodifiableException")
+        public void handleUnmodifiableException() {
+            // Given
+            var message = "Something does not exists, I'm gonna ka-boom!";
+            var exception = new UnmodifiableException(message);
+
+            // When
+            var entity = handler.handleException(exception, null);
+
+            // Then
+            assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
             assertThat(entity.getHeaders()).isEqualTo(HttpHeaders.EMPTY);
             assertThat(entity.getBody()).asString().contains(message);
         }
