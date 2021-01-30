@@ -19,7 +19,7 @@ public class RoleEntity extends AuditedEntity {
     @Id
     private String name;
 
-    @Column(name = "is_default_role", updatable = false)
+    @Column(name = "is_default_role", updatable = false, nullable = false)
     private boolean defaultRole;
 
     @ElementCollection(fetch = FetchType.EAGER)

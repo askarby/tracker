@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import javax.persistence.Column;
+import java.time.Instant;
 import java.util.Map;
 
 @Data
@@ -36,4 +38,16 @@ public class UserDTO {
     )
     @Singular("roleWithExpiration")
     private Map<String, Long> rolesWithExpiration;
+
+    @ApiModelProperty(notes = "Expiration time of account", example = "19238723191238")
+    private Long accountExpiresOn;
+
+    @ApiModelProperty(notes = "Is account locked", required = true)
+    private boolean locked;
+
+    @ApiModelProperty(notes = "The reason behind the account being locked")
+    private String lockedReason;
+
+    @ApiModelProperty(notes = "Expiration time of credentials", example = "19238723191238")
+    private Long credentialsExpiresOn;
 }

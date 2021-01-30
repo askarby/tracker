@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserMapper userMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetailsFromDTO loadUserByUsername(String username) throws UsernameNotFoundException {
         var userAndPassword = getUserByUsername(username);
         if (userAndPassword == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);

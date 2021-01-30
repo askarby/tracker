@@ -5,11 +5,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.Instant;
 import java.util.Collection;
 
 import static java.util.stream.Collectors.toList;
 
-public class UserDetailsFromDTO implements UserDetails {
+public class UserDetailsFromDTO implements UserDetails, UserIdentifiable {
     private final UserDTO user;
     private final String password;
 
@@ -41,25 +42,36 @@ public class UserDetailsFromDTO implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        // TODO: 2021-01-14 - Needs to be inplemented with actual logic (dummy implementation for now)
-        return true;
+        var expires = Instant.ofEpochMilli(user.getAccountExpiresOn());
+        var now = Instant.now();
+        return hasNonExpiredSystemRole() || expires.isAfter(now);
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        // TODO: 2021-01-14 - Needs to be inplemented with actual logic (dummy implementation for now)
-        return true;
+        return hasNonExpiredSystemRole() || !user.isLocked();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        // TODO: 2021-01-14 - Needs to be inplemented with actual logic (dummy implementation for now)
-        return true;
+        var expires = Instant.ofEpochMilli(user.getCredentialsExpiresOn());
+        var now = Instant.now();
+        return hasNonExpiredSystemRole() || expires.isAfter(now);
     }
 
     @Override
     public boolean isEnabled() {
-        // TODO: 2021-01-14 - Needs to be inplemented with actual logic (dummy implementation for now)
+        // Account is always enabled
         return true;
+    }
+
+    private boolean hasNonExpiredSystemRole() {
+        var systemRoleExpiration = user.getRolesWithExpiration().get(DefaultRole.SYSTEM.asText());
+        return systemRoleExpiration != null && systemRoleExpiration > System.currentTimeMillis();
+    }
+
+    @Override
+    public long getUserId() {
+        return user.getId();
     }
 }

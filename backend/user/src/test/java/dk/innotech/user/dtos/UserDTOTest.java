@@ -34,8 +34,12 @@ public class UserDTOTest {
                 .audit(audit)
                 .username("johndoe")
                 .fullName("John Doe, Jr.")
-                .roleWithExpiration("ROLE_USER", System.currentTimeMillis())
-                .roleWithExpiration("ROLE_ADMIN", System.currentTimeMillis())
+                .roleWithExpiration("ROLE_USER", System.currentTimeMillis() + 1)
+                .roleWithExpiration("ROLE_ADMIN", System.currentTimeMillis() + 2)
+                .accountExpiresOn(System.currentTimeMillis() + 3)
+                .locked(true)
+                .lockedReason("Stupid using, for testing purposes")
+                .credentialsExpiresOn(System.currentTimeMillis() + 4)
                 .build();
         mapper = new ObjectMapper();
     }
@@ -43,7 +47,17 @@ public class UserDTOTest {
     @Test
     @DisplayName("should have properties with getters and setters")
     public void properties() {
-        assertThatBean(UserDTO.class).hasBeanProperties("id", "audit", "username", "fullName", "rolesWithExpiration");
+        assertThatBean(UserDTO.class).hasBeanProperties(
+                "id",
+                "audit",
+                "username",
+                "fullName",
+                "rolesWithExpiration",
+                "accountExpiresOn",
+                "locked",
+                "lockedReason",
+                "credentialsExpiresOn"
+        );
     }
 
     @Test
@@ -70,6 +84,20 @@ public class UserDTOTest {
                 .withNotes()
                 .withExample()
                 .thatIsRequired();
+        assertThat(UserDTO.class).hasApiModelField("accountExpiresOn")
+                .withNotes()
+                .withExample()
+                .thatIsOptional();
+        assertThat(UserDTO.class).hasApiModelField("locked")
+                .withNotes()
+                .thatIsRequired();
+        assertThat(UserDTO.class).hasApiModelField("lockedReason")
+                .withNotes()
+                .thatIsOptional();
+        assertThat(UserDTO.class).hasApiModelField("credentialsExpiresOn")
+                .withNotes()
+                .withExample()
+                .thatIsOptional();
     }
 
     @Test

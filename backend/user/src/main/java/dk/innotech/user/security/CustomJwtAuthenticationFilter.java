@@ -29,8 +29,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
             String jwtToken = extractJwtFromRequest(request);
 
             if (StringUtils.hasText(jwtToken) && jwtTokenUtil.validateToken(jwtToken)) {
-                var userDetails = new User(jwtTokenUtil.getUsernameFromToken(jwtToken), "",
-                        jwtTokenUtil.getRolesFromToken(jwtToken));
+                var userDetails = jwtTokenUtil.getUserDetails(jwtToken);
 
                 var token = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());

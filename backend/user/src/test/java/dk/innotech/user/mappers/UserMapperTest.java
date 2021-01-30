@@ -42,6 +42,8 @@ public class UserMapperTest {
         var updatedBy = 2L;
         var createdOn = updatedOn.minus(1, ChronoUnit.DAYS);
         var createdBy = 1L;
+        var accountExpiresOn = updatedOn.plus(365, ChronoUnit.DAYS);
+        var credentialsExpiresOn = updatedOn.plus(31, ChronoUnit.DAYS);
 
         userEntity = UserEntity.builder()
                 .id(42L)
@@ -52,6 +54,10 @@ public class UserMapperTest {
                 .username("johndoe")
                 .encodedPassword("encoded password")
                 .fullName("John Doe, Jr.")
+                .accountExpiresOn(accountExpiresOn)
+                .locked(true)
+                .lockedReason("Banned due to test purposes")
+                .credentialsExpiresOn(credentialsExpiresOn)
                 .build();
 
         roleEntity = RoleEntity.builder()
@@ -116,6 +122,10 @@ public class UserMapperTest {
             assertThat(mapped.getRolesWithExpiration().size()).isEqualTo(1);
             assertThat(mapped.getRolesWithExpiration()).extracting("ROLE_TEST")
                     .isEqualTo(userRoleEntities.get(0).getExpiresAt().toEpochMilli());
+            assertThat(mapped.getAccountExpiresOn()).isEqualTo(userEntity.getAccountExpiresOn().toEpochMilli());
+            assertThat(mapped.isLocked()).isEqualTo(userEntity.isLocked());
+            assertThat(mapped.getLockedReason()).isEqualTo(userEntity.getLockedReason());
+            assertThat(mapped.getCredentialsExpiresOn()).isEqualTo(userEntity.getCredentialsExpiresOn().toEpochMilli());
         }
     }
 
